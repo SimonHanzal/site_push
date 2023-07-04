@@ -5,7 +5,7 @@ on:
         - master
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
       - name: Setup hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: "0.111.3"
+          hugo-version: "latest"
 
       - name: Build
         # remove --minify tag if you do not need it
@@ -27,6 +27,10 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
+           path: /tmp/hugo_cache
+           key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+           restore-keys: |
+            ${{ runner.os }}-hugomod-
           personal_token: ${{ secrets.ACCESS_TOKEN }}
           external_repository: simonhanzal/receiver_test
           publish_dir: ./public
