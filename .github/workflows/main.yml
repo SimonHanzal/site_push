@@ -1,0 +1,36 @@
+name: publisher
+on: 
+  push:
+    branches:
+        - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - name: Update theme
+        # (Optional)If you have the theme added as submodule, you can pull it and use the most updated version
+        run: git submodule update --init --recursive
+
+      - name: Setup hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.111.3"
+
+      - name: Build
+        # remove --minify tag if you do not need it
+        # docs: https://gohugo.io/hugo-pipes/minification/
+        run: hugo
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.ACCESS_TOKEN }}
+          external_repository: simonhanzal/receiver_test
+          publish_dir: ./public
+          #   keep_files: true
+          user_name: simonhanzal
+          user_email: hanzalsimon@gmail.com
+          publish_branch: main
