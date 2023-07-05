@@ -7,3 +7,4 @@ tags = [ "test", "try", ]
 +++
 
 Hello there!
+![Banana]("images/Banana-Single.jpg")
